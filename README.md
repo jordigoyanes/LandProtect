@@ -1,5 +1,5 @@
 # LandProtect
-Protect your land in Minecraft with this simple and powerful plugin written in JavaScript using ScriptCraft.
+Claim land in Minecraft and protect it with this simple but powerful plugin written in JavaScript using ScriptCraft.
 
 #How to claim land
 Place a sing and type a name between two ^ signs. Like this: ^my House Name^
