@@ -1,7 +1,8 @@
 var alldata = scload('serverdb.json');
-if (alldata === undefined) {
+if(alldata == undefined) {
     alldata = {};
     alldata.chunks = {};
+    scsave(alldata, 'serverdb.json');
 }
 
 function claimSign(event) {
