@@ -1,4 +1,7 @@
+//LandProtect version 1.5
+
 var alldata = scload('serverdb.json');
+//setting database objects if unexistent:
 if(alldata == undefined) {
     alldata = {};
     alldata.chunks = {};
@@ -19,6 +22,7 @@ function claimSign(event) {
         alldata.chunks["x:" + cx + "z:" + cz] = {};
         alldata.chunks["x:" + cx + "z:" + cz].name = name;
         alldata.chunks["x:" + cx + "z:" + cz].owner = claimer.uniqueId.toString();
+        alldata.chunks["x:" + cx + "z:" + cz].friends = [];
         scsave(alldata, 'serverdb.json');
         echo(claimer, "Congratulations, you are now the owner of ".green() + name + "!")
     }
@@ -50,16 +54,22 @@ function claimSign(event) {
 var canBuild = function(location, player) {
     var x = location.getChunk().getX();
     var z = location.getChunk().getZ();
-    if (player.isOp()) { //operators can edit the land if needed
+    if(player.isOp()){
         return true;
     } else {
-        if (alldata.chunks["x:" + x + "z:" + z] === undefined) {
+        if(alldata.chunks["x:" + x + "z:" + z] == undefined) {
             return true;
-        } else {
-            if (location.getWorld().getEnvironment().equals(org.bukkit.World.Environment.NORMAL) && alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId.toString()) {
+        } else{
+            if(location.getWorld().getEnvironment().equals(org.bukkit.World.Environment.NORMAL) && alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId) {
                 return true;
             } else {
-                return false;
+                var friends = alldata.chunks["x:" + x + "z:" + z].friends
+                for(var i=0; i < friends.length; i++){
+                    if(friends[i] == player.uniqueId){
+                        return true;
+                    }
+                }
+                return false;   
             }
         }
     }
@@ -116,7 +126,53 @@ var showPropertyName = function(event) {
         }
     }
 }
+//commands
+commando('chunkadd', function(args, player){
+    var host = player;
+    var x = host.getLocation().getChunk().getX();
+    var z = host.getLocation().getChunk().getZ();
+    var chunk = alldata.chunks["x:" + x + "z:" + z]
+    var isChunkOwner = chunk == undefined ? false : chunk.owner == host.uniqueId ? true : false;
 
+    if(isChunkOwner){
+        var guest = org.bukkit.Bukkit.getServer().getPlayer(args[0]);
+        if(guest != null && host != guest){
+            var friends = alldata.chunks["x:" + x + "z:" + z].friends;
+            friends.push(guest.uniqueId.toString());
+            scsave(alldata, "serverdb.json");
+            echo(host, "You have given building permission to ".green()+guest.name+" for your chunk '"+chunk.name+"'")
+            echo(guest, "You have been given permission to build on '".green()+chunk.name+"', property of "+host.name)
+        }else{
+            echo(host, "That player was not found")
+        }
+    }else{echo(host, "You don't own this chunk".red())}
+});
+commando('chunkkick', function(args, player){
+    var host = player;
+    var x = host.getLocation().getChunk().getX();
+    var z = host.getLocation().getChunk().getZ();
+    var friends = alldata.chunks["x:" + x + "z:" + z].friends;
+    var chunk = alldata.chunks["x:" + x + "z:" + z]
+    var isChunkOwner = chunk == undefined ? false : chunk.owner == host.uniqueId ? true : false;
+    var playertoKick = org.bukkit.Bukkit.getServer().getPlayer(args[0]);
+    if(isChunkOwner){
+        if(playertoKick !=null && host != playertoKick){
+            for(var i=0; i < friends.length; i++){
+                if(friends[i] == playertoKick.uniqueId){
+                    friends[i] = undefined;
+                    scsave(alldata, "serverdb.json");
+                    echo(host, "You removed building permission to ".yellow()+playertoKick.name+"!")
+
+                }else{
+                    if(i == friends.length - 1){
+                        echo(host, "That player didn't have building permission")
+                    }
+                }
+            }
+        }else{echo(host, "That player was not found")}
+    }else{echo(host, "You don't own this chunk".red())}
+
+});
 events.signChange(claimSign);
 events.playerBucketEmpty(onBukkitEmpty)
 events.playerBucketFill(onBukkitFill)
