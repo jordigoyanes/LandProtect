@@ -14,8 +14,8 @@ The land will be free again.
 Place again a sign inside your claimed land and type another name, like this: ^New House Name^
 
 #How to share your land with other players.
-Add player to your chunk doing: /chunkadd <player name> while standing inside the chunk you want to share.
-You can delete his permission anytime with: /chuckkick <player name>
+Add player to your chunk doing: /chunkadd PlayerName while standing inside the chunk you want to share.
+You can delete his permission anytime with: /chunckkick PlayerName
 
 #More info & easy installation
 LandProtect uses ScriptCraft, a lightweight Minecraft plugin that works as a bridge for JavaScript to use the full Bukkit API.
