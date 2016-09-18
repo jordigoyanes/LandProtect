@@ -1,8 +1,7 @@
 //LandProtect version 1.5
-
 var alldata = scload('serverdb.json');
 //setting database objects if unexistent:
-if(alldata == undefined) {
+if (alldata == undefined) {
     alldata = {};
     alldata.chunks = {};
     scsave(alldata, 'serverdb.json');
@@ -54,22 +53,22 @@ function claimSign(event) {
 var canBuild = function(location, player) {
     var x = location.getChunk().getX();
     var z = location.getChunk().getZ();
-    if(player.isOp()){
+    if (player.isOp()) {
         return true;
     } else {
-        if(alldata.chunks["x:" + x + "z:" + z] == undefined) {
+        if (alldata.chunks["x:" + x + "z:" + z] == undefined) {
             return true;
-        } else{
-            if(location.getWorld().getEnvironment().equals(org.bukkit.World.Environment.NORMAL) && alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId) {
+        } else {
+            if (location.getWorld().getEnvironment().equals(org.bukkit.World.Environment.NORMAL) && alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId) {
                 return true;
             } else {
                 var friends = alldata.chunks["x:" + x + "z:" + z].friends
-                for(var i=0; i < friends.length; i++){
-                    if(friends[i] == player.uniqueId){
+                for (var i = 0; i < friends.length; i++) {
+                    if (friends[i] == player.uniqueId) {
                         return true;
                     }
                 }
-                return false;   
+                return false;
             }
         }
     }
@@ -102,52 +101,54 @@ var onBukkitEmpty = function(event) {
 }
 
 var showPropertyName = function(event) {
-    var player = event.getPlayer()
-    if (!event.getFrom().getWorld().getName().endsWith("_nether") && !event.getFrom().getWorld().getName().endsWith("_end") && event.getFrom().getChunk() != event.getTo().getChunk()) {
-        // announce new area
-        var x1 = event.getFrom().getChunk().getX();
-        var z1 = event.getFrom().getChunk().getZ();
+        var player = event.getPlayer()
+        if (!event.getFrom().getWorld().getName().endsWith("_nether") && !event.getFrom().getWorld().getName().endsWith("_end") && event.getFrom().getChunk() != event.getTo().getChunk()) {
+            // announce new area
+            var x1 = event.getFrom().getChunk().getX();
+            var z1 = event.getFrom().getChunk().getZ();
 
-        var x2 = event.getTo().getChunk().getX();
-        var z2 = event.getTo().getChunk().getZ();
+            var x2 = event.getTo().getChunk().getX();
+            var z2 = event.getTo().getChunk().getZ();
 
-        var name1 = alldata.chunks["x:" + x1 + "z:" + z1] !== undefined ? alldata.chunks["x:" + x1 + "z:" + z1].name : "the wilderness";
-        var name2 = alldata.chunks["x:" + x2 + "z:" + z2] !== undefined ? alldata.chunks["x:" + x2 + "z:" + z2].name : "the wilderness";
+            var name1 = alldata.chunks["x:" + x1 + "z:" + z1] !== undefined ? alldata.chunks["x:" + x1 + "z:" + z1].name : "the wilderness";
+            var name2 = alldata.chunks["x:" + x2 + "z:" + z2] !== undefined ? alldata.chunks["x:" + x2 + "z:" + z2].name : "the wilderness";
 
-        if (name1 == null) name1 = "the wilderness";
-        if (name2 == null) name2 = "the wilderness";
+            if (name1 == null) name1 = "the wilderness";
+            if (name2 == null) name2 = "the wilderness";
 
-        if (!name1.equals(name2)) {
-            if (name2.equals("the wilderness")) {
-                echo(player, "".gray() + "[ " + name2 + " ]");
-            } else {
-                echo(player, "".yellow() + "[ " + name2 + " ]");
+            if (!name1.equals(name2)) {
+                if (name2.equals("the wilderness")) {
+                    echo(player, "".gray() + "[ " + name2 + " ]");
+                } else {
+                    echo(player, "".yellow() + "[ " + name2 + " ]");
+                }
             }
         }
     }
-}
-//commands
-commando('chunkadd', function(args, player){
+    //commands
+commando('chunkadd', function(args, player) {
     var host = player;
     var x = host.getLocation().getChunk().getX();
     var z = host.getLocation().getChunk().getZ();
     var chunk = alldata.chunks["x:" + x + "z:" + z]
     var isChunkOwner = chunk == undefined ? false : chunk.owner == host.uniqueId ? true : false;
 
-    if(isChunkOwner){
+    if (isChunkOwner) {
         var guest = org.bukkit.Bukkit.getServer().getPlayer(args[0]);
-        if(guest != null && host != guest){
+        if (guest != null && host != guest) {
             var friends = alldata.chunks["x:" + x + "z:" + z].friends;
             friends.push(guest.uniqueId.toString());
             scsave(alldata, "serverdb.json");
-            echo(host, "You have given building permission to ".green()+guest.name+" for your chunk '"+chunk.name+"'")
-            echo(guest, "You have been given permission to build on '".green()+chunk.name+"', property of "+host.name)
-        }else{
+            echo(host, "You have given building permission to ".green() + guest.name + " for your chunk '" + chunk.name + "'")
+            echo(guest, "You have been given permission to build on '".green() + chunk.name + "', property of " + host.name)
+        } else {
             echo(host, "That player was not found")
         }
-    }else{echo(host, "You don't own this chunk".red())}
+    } else {
+        echo(host, "You don't own this chunk".red())
+    }
 });
-commando('chunkkick', function(args, player){
+commando('chunkkick', function(args, player) {
     var host = player;
     var x = host.getLocation().getChunk().getX();
     var z = host.getLocation().getChunk().getZ();
@@ -155,22 +156,26 @@ commando('chunkkick', function(args, player){
     var chunk = alldata.chunks["x:" + x + "z:" + z]
     var isChunkOwner = chunk == undefined ? false : chunk.owner == host.uniqueId ? true : false;
     var playertoKick = org.bukkit.Bukkit.getServer().getPlayer(args[0]);
-    if(isChunkOwner){
-        if(playertoKick !=null && host != playertoKick){
-            for(var i=0; i < friends.length; i++){
-                if(friends[i] == playertoKick.uniqueId){
+    if (isChunkOwner) {
+        if (playertoKick != null && host != playertoKick) {
+            for (var i = 0; i < friends.length; i++) {
+                if (friends[i] == playertoKick.uniqueId) {
                     friends[i] = undefined;
                     scsave(alldata, "serverdb.json");
-                    echo(host, "You removed building permission to ".yellow()+playertoKick.name+"!")
+                    echo(host, "You removed building permission to ".yellow() + playertoKick.name + "!")
 
-                }else{
-                    if(i == friends.length - 1){
+                } else {
+                    if (i == friends.length - 1) {
                         echo(host, "That player didn't have building permission")
                     }
                 }
             }
-        }else{echo(host, "That player was not found")}
-    }else{echo(host, "You don't own this chunk".red())}
+        } else {
+            echo(host, "That player was not found")
+        }
+    } else {
+        echo(host, "You don't own this chunk".red())
+    }
 
 });
 events.signChange(claimSign);
