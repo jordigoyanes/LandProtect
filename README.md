@@ -13,6 +13,11 @@ The land will be free again.
 #How to rename your land name
 Place again a sign inside your claimed land and type another name, like this: ^New House Name^
 
+#How to add players to your land+
+You can also share your land with other players.
+Add player to your chunk doing: /chunkadd <player name> while standing inside the chunk you want to share.
+You can delete his permission anytime with: /chuckkick <player name>
+
 #More info & easy installation
 LandProtect uses ScriptCraft, a lightweight Minecraft plugin that works as a bridge for JavaScript to use the full Bukkit API.
 ScriptCraft plugins don't need to be compiled to .jar to work, leting you easily edit the code and improve it directly, making things more Open Source friendly.
