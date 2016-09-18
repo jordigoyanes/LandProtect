@@ -13,8 +13,7 @@ The land will be free again.
 #How to rename your land name
 Place again a sign inside your claimed land and type another name, like this: ^New House Name^
 
-#How to add players to your land+
-You can also share your land with other players.
+#How to share your land with other players.
 Add player to your chunk doing: /chunkadd <player name> while standing inside the chunk you want to share.
 You can delete his permission anytime with: /chuckkick <player name>
 
