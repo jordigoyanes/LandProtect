@@ -10,7 +10,7 @@ if (alldata == undefined) {
 function claimSign(event) {
     var player = event.getPlayer();
     var playerUUID = player.uniqueId;
-    var specialCharacter = "*";
+    var specialCharacter = "#";
     var lines = event.getLines();
     var signText = lines[0] + lines[1] + lines[2] + lines[3];
     var chunk = event.getBlock().getWorld().getChunkAt(event.getBlock().getLocation()); //get the chunck the sign is on.
@@ -28,23 +28,27 @@ function claimSign(event) {
 
     if (signText.length() > 0 && signText.substring(0, 1).equals(specialCharacter) && signText.substring(signText.length() - 1).equals(specialCharacter)) {
         var name = signText.substring(1, signText.length() - 1);
-        if (name != "abandon") {
-            if (alldata.chunks["x:" + x + "z:" + z] === undefined) {
-                buyProperty(x, z, name, player);
+        if (alldata.chunks["x:" + x + "z:" + z] === undefined) {
+            if (name == "abandon" || name == "the wilderness") {
+                echo(player, "You can't name your claim 'the wilderness' or 'abandon'.".red())
             } else {
-                if (alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId.toString()) {
-                    alldata.chunks["x:" + x + "z:" + z].name = name;
-                    scsave(alldata, 'serverdb.json');
-                    echo(player, "You renamed this land to " + name + ".");
-                }
+                buyProperty(x, z, name, player);
             }
         } else {
-            if (alldata.chunks["x:" + x + "z:" + z] === undefined) {
-                echo(player, "You can't name your claim 'abandon'. You do that when you want to abandon claimed land.".red())
-            } else {
-                alldata.chunks["x:" + x + "z:" + z] = undefined;
-                scsave(alldata, 'serverdb.json');
-                echo(player, "You abandoned this chunk.".yellow());
+            if (alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId.toString()) {
+                if (name != "the wilderness") {
+                    if (name == "abandon") {
+                        alldata.chunks["x:" + x + "z:" + z] = undefined;
+                        scsave(alldata, 'serverdb.json');
+                        echo(player, "You abandoned this chunk.".yellow());
+                    } else {
+                        alldata.chunks["x:" + x + "z:" + z].name = name;
+                        scsave(alldata, 'serverdb.json');
+                        echo(player, "You renamed this land to '" + name + "'.");
+                    }
+                } else {
+                    echo(player, "You can't rename your claim to 'the wilderness'.".red());
+                }
             }
         }
     }
@@ -125,12 +129,12 @@ var showPropertyName = function(event) {
             } else {
                 echo(player, "".yellow() + "[ " + name2 + " ]");
             }
-        } else {
-            if (alldata.chunks["x:" + x2 + "z:" + z2] !== undefined) {
-                echo(player, "".yellow() + "[ " + name2 + " ]");
-            } else {
-                echo(player, "".gray() + "[ " + name2 + " ]");
-            }
+            /*}else{
+                if (alldata.chunks["x:" + x2 + "z:" + z2] !== undefined) {
+                    echo(player, "".yellow() + "[ " + name2 + " ]");
+                }else{
+                    echo(player, "".gray() + "[ " + name2 + " ]");
+                }*/
         }
     }
 }
