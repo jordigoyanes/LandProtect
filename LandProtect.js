@@ -60,20 +60,25 @@ var canBuild = function(location, player) {
     if (player.isOp()) { //Op players like admins can build anywhere
         return true;
     } else {
-        if (alldata.chunks["x:" + x + "z:" + z] == undefined) { //if no one owns it
-            return true;
-        } else {
-            if (location.getWorld().getEnvironment().equals(org.bukkit.World.Environment.NORMAL) && alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId) { // you can only build in the normal world
+        if (location.getWorld().getEnvironment().equals(org.bukkit.World.Environment.NORMAL)) {
+            if (alldata.chunks["x:" + x + "z:" + z] == undefined) { //if no one owns it
                 return true;
-            } else { //if it is a friend who has been granted building permission, return true.
-                var friends = alldata.chunks["x:" + x + "z:" + z].friends
-                for (var i = 0; i < friends.length; i++) { //A way a came up with to check if the player is in your friends list (an array for that property only).
-                    if (friends[i] == player.uniqueId) {
-                        return true;
+            } else {
+                if (alldata.chunks["x:" + x + "z:" + z].owner == player.uniqueId) {
+                    return true;
+                } else { //if it is a friend who has been granted building permission, return true.
+                    var friends = alldata.chunks["x:" + x + "z:" + z].friends
+                    for (var i = 0; i < friends.length; i++) { //A way a came up with to check if the player is in your friends list (an array for that property only).
+                        if (friends[i] == player.uniqueId) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
-                return false;
             }
+        } else {
+            return false;
         }
     }
 }
@@ -129,12 +134,6 @@ var showPropertyName = function(event) {
             } else {
                 echo(player, "".yellow() + "[ " + name2 + " ]");
             }
-            /*}else{
-                if (alldata.chunks["x:" + x2 + "z:" + z2] !== undefined) {
-                    echo(player, "".yellow() + "[ " + name2 + " ]");
-                }else{
-                    echo(player, "".gray() + "[ " + name2 + " ]");
-                }*/
         }
     }
 }
