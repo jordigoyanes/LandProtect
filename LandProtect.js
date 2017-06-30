@@ -148,7 +148,7 @@ commando('chunkadd', function(args, player) {
         echo(host, "You don't own this chunk".red())
     }
 });
-commando('chunkkick', function(args, player) {
+commando('landkick', function(args, player) {
     var host = player;
     var x = host.getLocation().getChunk().getX();
     var z = host.getLocation().getChunk().getZ();
