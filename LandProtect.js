@@ -152,7 +152,7 @@ commando('landadd', function(args, player) {
             friends.push(guest.uniqueId.toString());
             scsave(alldata, "serverdb.json");
             echo(host, "You have given building permission to ".green() + guest.name + " on your chunk '" + chunk.name + "'.");
-            echo(guest, "You have been given permission to build on '".green() + chunk.name + "', property of " + host.name + ".");
+            echo(guest, "You have been granted permission to build on '".green() + chunk.name + "', property of " + host.name + ".");
         } else {
             echo(host, "That player was not found.")
         }
