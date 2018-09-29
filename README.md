@@ -7,7 +7,7 @@ You can use spaces and use the 4 lines of the sing. Click **"Done"**
 From that very first moment, your land will be yours and no one else will be able to break any block, open any chest or grief in anyway(lava, water, etc.) without your permission.
 
 # How to abandon land
-Place a sing inside your claimed land, and type **#abandon#**.  
+Place a sign inside your claimed land, and type **#abandon#**.  
 The land will be free again.
 
 # How to rename your land name
@@ -30,6 +30,3 @@ Anything you can do in a Bukkit Minecraft plugin using Java can now be done usin
 **It just works with way less number of lines and it is definitely easier to read and write than Java.**  
 ScriptCraft compiles your JavaScript code to its optimized equivalent Java.
 ScriptCraft plugins don't get compiled to .jar to work, letting you easily edit the code and improve it directly making it easier to mantain it through any text editor. You can refresh changes without reloading or restarting typing **/js refresh()** at the console or at the chat as admin.  
-  
-*-Jordi Goyanes*
-
