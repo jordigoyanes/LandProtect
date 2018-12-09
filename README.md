@@ -20,7 +20,7 @@ This will grant editing permission on that property to that second player.
 You can delete his/her permission anytime with: **/landkick PlayerName**
 
 # Installation
-LandProtect uses **ScriptCraft**, a lightweight Minecraft plugin that works as a bridge for JavaScript to use the full Bukkit API.  
+LandProtect uses **ScriptCraft**, a lightweight Minecraft plugin that works as a bridge for JavaScript to use the full Java Bukkit API.  
 Download ScriptCraft from here: www.scriptcraftjs.org, ScriptCraft will generate its own folder where you can add your custom plugins, like LandProtect.  
 Inside the ScriptCraft folder, go to **'plugins'** and paste landprotection.js in.
 
